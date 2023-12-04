@@ -19,7 +19,7 @@ void ABasePawn::BeginPlay()
 	
 }
 
-// Called every frame
+// Called every frame (extra for init)
 void ABasePawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
