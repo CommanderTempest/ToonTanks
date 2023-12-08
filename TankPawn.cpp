@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
+//#include "DrawDebugHelpers.h"
 
 ATankPawn::ATankPawn()
 {
@@ -16,6 +17,36 @@ ATankPawn::ATankPawn()
     Camera->SetupAttachment(Spring);
 }
 
+// Called when the game starts or when spawned
+void ATankPawn::BeginPlay()
+{
+	Super::BeginPlay();
+	
+    PlayerControllerRef = Cast<APlayerController>(GetController());
+}
+
+// Called every frame (extra for init)
+void ATankPawn::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+    if (PlayerControllerRef)
+    {
+        FHitResult HitResult;
+        PlayerControllerRef->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult);
+        // DrawDebugSphere(
+        //     GetWorld(),
+        //     HitResult.ImpactPoint, 
+        //     25.f,
+        //     12,
+        //     FColor::Red,
+        //     false,
+        //     -1.f
+        // );
+        RotateTurret(HitResult.ImpactPoint);
+    }
+}
+
 // Called to bind functionality to input
 void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -24,6 +55,8 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     // binding inputs to functions
     PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ATankPawn::Move);
     PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ATankPawn::Turn);
+
+    PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &ATankPawn::Fire);
 }
 
 void ATankPawn::Move(float Value) {
