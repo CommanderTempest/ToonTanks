@@ -21,10 +21,12 @@ class TOONTANKS_API ATankPawn : public ABasePawn
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void HandleDestruction();
+
 	public:
 		ATankPawn();
 		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+		APlayerController* GetTankPlayerController() const {return TankPlayerController;}
 	private:
 		UPROPERTY(VisibleAnywhere, Category = "Components")
 		class USpringArmComponent* Spring;
@@ -41,5 +43,5 @@ class TOONTANKS_API ATankPawn : public ABasePawn
 		void Move(float Value);
 		void Turn(float Value);
 
-		APlayerController* PlayerControllerRef;
+		APlayerController* TankPlayerController;
 };
