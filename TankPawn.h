@@ -28,6 +28,8 @@ class TOONTANKS_API ATankPawn : public ABasePawn
 		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 		APlayerController* GetTankPlayerController() const {return TankPlayerController;}
 
+		bool bAlive = true;
+
 		void HandleDestruction();
 	private:
 		UPROPERTY(VisibleAnywhere, Category = "Components")
